@@ -1,0 +1,54 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<title>'sup?</title>
+<style type="text/css">
+code {
+	display: block; border: 1px solid black; padding: .5em 1em;
+	white-space: pre-wrap; max-width: 500px; width: 60%;
+	line-height: 1.5em; margin: 1em auto;
+}
+</style>
+<style type="text/css" id="css">ul.datalist {
+	border: 1px solid green; padding: 0; list-style: none; background: white;
+}
+ul.datalist > li {
+	padding: 2px 5px;
+}
+ul.datalist > li:hover {
+	background: lightblue;
+}
+ul.datalist:not(:hover) > li[selected] {
+	background: lightblue;
+}</style>
+<script type="text/javascript" src="upgrdr/batch.php"></script>
+<script type="text/javascript">
+upgrdr.add('select','jQuery');
+</script>
+<script type="text/javascript">
+$(document).ready(function() {
+	$('code').text($('style#css').text());
+	$('code').blur(function() {
+		$('style#css').text($('code').text());
+	});
+});
+</script>
+</head>
+<body>
+<h1>hello world</h1>
+<input type="text" name="tbd" list="list-1"/>
+<br/>
+<ul id="list-1" style="display:none">
+	<li>IE?</li>
+	<li selected>Firefox</li>
+	<li data-value="webkit">Chrome</li>
+</ul>
+<select name="tba">
+	<option>IE?</li>
+	<option selected>Firefox</option>
+	<option value="webkit">Chrome</option>
+</select>
+<code>
+</code>
+</body>
+</html>
