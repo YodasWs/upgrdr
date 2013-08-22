@@ -1,40 +1,38 @@
-﻿if (typeof history.pushState !== 'function') {
+﻿// Polyfill HTML5 History API
+if (typeof history.pushState !== 'function') {
 	history.states = [];
 	history.pushState = function(state, title, url) {
-		var search = {};
-		var query = location.search || '?';
-		var vars = query.replace(/^\?/,'').split('&');
-		for (i in vars) {
-			key = decodeURIComponent(vars[i].substr(0, vars[i].indexOf('=')));
-			search[key] = decodeURIComponent(vars[i].substr(vars[i].indexOf('=')+1));
-		}
-		search.state = encodeURIComponent(JSON.stringify(state))
-		search.url = encodeURIComponent(url);
+		// Polyfill HTML5 pushState with onhashchange
+		state = state || {};
+		state.url = url;
 // TODO: Use url as hash like ajaxify, https://gist.github.com/balupton/858093
 		var hash = parseInt(location.hash.replace(/^[\/#]+/,''), 10) + 1 || 1;
-		history.states[hash] = search;
+		history.states[hash] = state;
+		history.state = state;
 		location.hash = hash;
 	}
-// TODO: history.replaceState
 	history.replaceState = function(state, title, url) {
+		// Polyfill HTML5 replaceState with onhashchange
+		state = state || {};
+		state.url = url;
+		var hash = parseInt(location.hash.replace(/^[\/#]+/,''), 10) || 0;
+		history.states[hash] = state;
+		history.state = state;
 	}
+	history.replaceState({}, null, location.href);
+	if (!document.createEvent && !window.onpopstate)
+		window.onpopstate = function(event) {};
 	window.onhashchange = function() {
-		history.state = history.states[parseInt(location.hash.substr(1), 10)];
-		// Create popstate Event, http://stackoverflow.com/questions/2490825/how-to-trigger-event-in-javascript
-		var event;
-		if (document.createEvent) {
-			event = document.createEvent("HTMLEvents");
+		var hash = parseInt(location.hash.replace(/^[\/#]+/,''), 10) || 0;
+		history.state = history.states[hash];
+		// Fire popstate Event
+		if (window.jQuery) $(window).trigger('popstate');
+		else if (document.createEvent) {
+			var event = document.createEvent("HTMLEvents");
 			event.initEvent("popstate", true, true);
-		} else {
-			event = document.createEventObject();
-			event.eventType = "popstate";
-		}
-		event.eventName = 'popstate';
-		event.memo = {};
-		if (document.createEvent) {
+			event.eventName = 'popstate';
 			window.dispatchEvent(event);
-		} else {
-			window.fireEvent("on" + event.eventType, event);
-		}
+		} else if (typeof window.onpopstate == 'function')
+			window.onpopstate();
 	}
 }

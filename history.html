@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>History API</title>
+<!--[if lt IE 9]><script type="text/javascript" src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+<style type="text/css">
+h1 { text-align: center; }
+</style>
+<script type="text/javascript" src="upgrdr/batch.php"></script>
+<script type="text/javascript">
+upgrdr.add('history');
+var changePage = function(link) {
+	if (typeof history.state === 'object' && history.state && typeof history.state.url === 'string') {
+		link = history.state.url;
+	}
+	switch (link) {
+	case 'more_history.php':
+		document.title = 'More History!';
+		document.getElementsByTagName('h1')[0].innerHTML = 'More History!';
+		document.getElementsByTagName('a')[0].innerHTML = 'Less History';
+		document.getElementsByTagName('a')[0].setAttribute('href', '/less_history.php');
+		break;
+	case 'less_history.php':
+		document.title = 'Less History?';
+		document.getElementsByTagName('h1')[0].innerHTML = 'Less History?';
+		document.getElementsByTagName('a')[0].innerHTML = 'History';
+		document.getElementsByTagName('a')[0].setAttribute('href', '/history2.php');
+		break;
+	default:
+		document.title = 'History';
+		document.getElementsByTagName('h1')[0].innerHTML = 'History';
+		document.getElementsByTagName('a')[0].innerHTML = 'More History';
+		document.getElementsByTagName('a')[0].setAttribute('href', '/more_history.php');
+	}
+};
+</script>
+</head>
+<body>
+<h1>History API</h1>
+<a href="/more_history.php">More History</a>
+<script type="text/javascript">
+changePage(location.pathname);
+document.getElementsByTagName('a')[0].onclick = function(e) {
+	e = e || event;
+	if (e.preventDefault) e.preventDefault();
+	history.pushState(null, null, this.pathname);
+	changePage(location.pathname);
+	return false;
+};
+window.onpopstate = function() {
+	changePage(location.pathname);
+};
+</script>
+</body>
+</html>
