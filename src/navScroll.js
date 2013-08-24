@@ -1,15 +1,21 @@
 ﻿// For beautiful single-page navigation
+
+// jQuery Required :-\
 upgrdr.add('jQuery');
+
+// Set Default Options
 if (!upgrdr._options) upgrdr._options = {};
-if (!upgrdr._options.navScroll) upgrdr._options.navScroll = {
-	easing:'easeInOutSine',
-	maxTime:1000,
-	minTime:400,
-	margin:'40%',
-	speed:800,
-	unit:'ms'
-};
+if (!upgrdr._options.navScroll) upgrdr._options.navScroll = {};
+(function(defaults) {
+	for (i in defaults) {
+		// Do not override user-entered options, if any
+		if (!upgrdr._options.navScroll[i])
+			upgrdr._options.navScroll[i] = defaults[i];
+	}
+})({easing:'easeInOutSine',maxTime:1000,minTime:400,margin:'40%',speed:800,unit:'ms'});
+
 $(document).ready(function() {
+	// On Navigation, Scroll into View
 	$('body > nav > a[href^="#"]').bind('click.nav', function() {
 		if ($(this).is('.active')) return false;
 		var speed, pos = $($(this).attr('href')).offset().top;
@@ -54,6 +60,7 @@ $(document).ready(function() {
 		var lastY = 0, navPos = -1;
 		$('body > nav > a[href^="#"]').each(function(i) {
 			lastY = $($(this).attr('href')).offset().top;
+			// Set offset margin for distance active section is below scrollTop
 			if (typeof upgrdr.options().navScroll.margin == 'number')
 				lastY -= upgrdr.options().navScroll.margin;
 			else if (/\d+%/.test(upgrdr.options().navScroll.margin))
