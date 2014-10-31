@@ -1,7 +1,7 @@
 upgrdr
 ======
 
-Polyfills for HTML5, and looking at HTML5.1
+Upgrading JavaScript in IE8, providing polyfills for HTML5, and looking at HTML5.1
 
 ## Adding to Your Site ##
 
@@ -15,10 +15,10 @@ upgrdr.add('jQuery', 'array', 'history');
 Or more directly if you choose:
 
 ```html
-<script src="string.js"></script>
-<!--[if lte IE 8]><script src="array.js"></script><![endif]-->
-<!--[if lte IE 9]><script src="history.js" async></script><![endif]-->
-<!--[if lte IE 9]><script src="ie.js" async></script><![endif]-->
+<script src="src/string.js"></script>
+<!--[if lte IE 8]><script src="src/array.js"></script><![endif]-->
+<!--[if lte IE 9]><script src="src/history.js" async></script><![endif]-->
+<!--[if lte IE 9]><script src="src/ie.js" async></script><![endif]-->
 ```
 
 ## HTML5 Polyfills ##
@@ -41,25 +41,20 @@ Requires jQuery or [Zepto.js](http://zeptojs.com/)
 
 For older browsers, especially people stuck on old versions of IE.
 
-### array.js ###
+### JavaScript v1.6
+* [Array.prototype.forEach](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach)
+* [Array.prototype.indexOf](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/indexOf)
 
-For IE 8 and lower.
-
-Adds `Array.prototype.indexOf()` and `Array.isArray()`
-
-### string.js ###
-
-Adds `String.prototype.trim()`.
-
-I have actually expanded the function so you can pass in which characters you want trimmed like in PHP. Otherwise it trims white space as expected.
-
-```html
-<script src="string.js"></script>
-<script>
-document.write("Hello World".trim('Hde'))
-// outputs 'llo worl'
-</script>
-```
+### JavaScript v1.8.1
+* [String.prototype.trim](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/trim)
+  However, I have extended this function to act more like PHP's trim() by accepting a string of characters to remove in addition to whitespace.
+  ```javascript
+  str = "Hello World"
+  console.log(str.trim('Hdl'))
+  // ello Wor
+  ```
+### JavaScript v1.8.5
+* [Array.isArray](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/isArray)
 
 ### json.js ###
 
@@ -68,5 +63,10 @@ Gives you `JSON.parse()` in very old browsers.
 Only needed with IE6/7.
 
 ```html
-<!--[if lt IE 8]><script src="json.js" async></script><![endif]-->
+<!--[if lt IE 9]>
+<script src="src/array.js" async></script>
+<script src="src/string.js" async></script>
+<script src="src/math.js" async></script>
+<![endif]-->
+<!--[if lt IE 8]><script src="src/json.js" async></script><![endif]-->
 ```
