@@ -49,5 +49,21 @@ if (!window.upgrdr) upgrdr = {
 				continue;
 			}
 		}
+	},
+	ready:function(cb){
+		var c=0,a=function(){if(!c){if(document.readyState=='complete'){cb();c=true}}}
+		if(Element.prototype.addEventListener)document.addEventListener('readystatechange',a)
+		else if(Element.prototype.attachEvent)document.attachEvent('onreadystatechange',a)
+	},
+	jqReady:function(cb) {
+		var c=0,a=function(){if(!c){if(document.readyState=='interactive'||document.readyState=='complete'){
+			var m=document.getElementsByTagName('script'),i=0
+			for(;i<m.length;i++)if(m[i].src.toLowerCase().indexOf('jquery')>-1){
+				if(Element.prototype.addEventListener){m[i].addEventListener('load',cb);break}
+				else if(Element.prototype.attachEvent){m[i].attachEvent('onload',cb);break}
+			};c=1
+		}}}
+		if(Element.prototype.addEventListener)document.addEventListener('readystatechange',a)
+		else if(Element.prototype.attachEvent)document.attachEvent('onreadystatechange',a)
 	}
 };
