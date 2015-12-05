@@ -26,7 +26,7 @@ if (!window.upgrdr) upgrdr = {
 	added:[],
 	history:function() {
 		if (typeof history.pushState !== 'function')
-			document.write('<script src="src/history.js" type="text/javascript"><\/script>');
+			document.write('<script src="src/history.js"><\/script>');
 	},
 	add:function() {
 		for(i=0; i<arguments.length; i++) {
@@ -39,12 +39,18 @@ if (!window.upgrdr) upgrdr = {
 			}
 			// Download jQuery
 			if (!window.jQuery && this.added.indexOf('jQuery') == -1 && ['select','scroll'].indexOf(arguments[i]) > -1) {
-				document.write('<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js" type="text/javascript"><\/script>');
+				document.write('<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"><\/script>');
 				this.added.push('jQuery');
 			}
 			// Download External File
-			if (['select','array','string','scroll'].indexOf(arguments[i]) > -1 && this.added.indexOf(arguments[i]) == -1) {
-				document.write('<script src="src/' + arguments[i] + '.js" type="text/javascript"><\/script>');
+			if ([
+				'array',
+				'math',
+				'select',
+				'scroll',
+				'string'
+			].indexOf(arguments[i]) > -1 && this.added.indexOf(arguments[i]) == -1) {
+				document.write('<script src="src/' + arguments[i] + '.js"><\/script>');
 				this.added.push(arguments[i]);
 				continue;
 			}
