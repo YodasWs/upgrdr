@@ -46,6 +46,7 @@ if (!window.upgrdr) upgrdr = {
 			if ([
 				'array',
 				'math',
+				'number',
 				'select',
 				'scroll',
 				'string'
